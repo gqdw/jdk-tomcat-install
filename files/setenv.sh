@@ -1,0 +1,1 @@
+JAVA_OPTS="$JAVA_OPTS -Xms3200m -Xmx3200m -XX:NewRatio=3  -Xss256k -XX:+DisableExplicitGC -XX:+UseConcMarkSweepGC -XX:+CMSParallelRemarkEnabled -XX:LargePageSizeInBytes=128m -XX:+UseFastAccessorMethods -XX:+UseCMSInitiatingOccupancyOnly -XX:CMSInitiatingOccupancyFraction=82 -XX:+CMSClassUnloadingEnabled"

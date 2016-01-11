@@ -1,0 +1,51 @@
+---
+- hosts: do
+  user: root
+  sudo: yes
+  tasks:
+ #   - name: cp jdk tar
+ #     copy: src=jdk-8u66-linux-x64.tar.gz dest=/usr/local/jdk-8u66-linux-x64.tar.gz
+ #     notify: 
+ #     - untar jdk
+ #     - cp jdk profile
+# jdk
+    - name: unarchive jdk
+      unarchive: src=files/jdk-8u66-linux-x64.tar.gz dest=/usr/local/
+      tags: 
+        - jdk
+      notify:
+      - mv jdk
+      - cp jdk profile
+
+# tomcat
+    - name: get tomcat tar 
+      copy: src=files/apache-tomcat-7.0.54.tar.gz dest=/usr/local/apache-tomcat-7.0.54.tar.gz
+     # get_url: url=http://archive.apache.org/dist/tomcat/tomcat-7/v7.0.54/bin/apache-tomcat-7.0.54.tar.gz dest=/usr/local/apache-tomcat-7.0.54.tar.gz
+      notify: 
+      - untar tomcat
+      - cp setevn.sh
+      - cp server.xml
+
+
+  handlers:
+    - name: mv jdk
+      command: mv /usr/local/jdk1.8.0_66/  /usr/local/jdk
+
+    - name : cp jdk profile
+      copy: src=files/jdk.sh dest=/etc/profile.d/jdk.sh
+
+    - name: unarchive jdk
+      unarchive: src=jdk-8u66-linux-x64.tar.gz dest=/usr/local/jdk
+      args:
+        chdir: /usr/local/
+
+    - name: untar tomcat
+      command: tar xf apache-tomcat-7.0.54.tar.gz
+      args:
+        chdir: /usr/local/
+
+    - name: cp setevn.sh
+      copy: src=files/setenv.sh dest=/usr/local/apache-tomcat-7.0.54/bin/setenv.sh
+
+    - name: cp server.xml
+      copy: src=files/server.xml dest=/usr/local/apache-tomcat-7.0.54/conf/server.xml
